@@ -30,13 +30,13 @@ Topic :: Software Development :: Testing
 """[1:-1]
 
 setup(
-    name='robotframework-sshlibrary',
+    name='robotframework-sshlibrary-py3',
     version=VERSION, # resolved with execfile
     description='Robot Framework test library for SSH and SFTP',
     long_description=README,
     author='Robot Framework Developers',
     author_email='robotframework@gmail.com',
-    url='https://github.com/robotframework/SSHLibrary',
+    url='https://github.com/Brian-Williams/SSHLibrary',
     license='Apache License 2.0',
     keywords='robotframework testing testautomation ssh sftp',
     platforms='any',
