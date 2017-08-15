@@ -12,12 +12,11 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-
 try:
     from robot.api import logger
 except ImportError:
     logger = None
-from robot.utils import ConnectionCache, is_string
+from robot.utils import ConnectionCache
 
 from .abstractclient import SSHClientException
 from .client import SSHClient
@@ -707,12 +706,12 @@ class SSHLibrary(object):
         if logger:
             logger.write(msg, level)
         else:
-            print('*%s* %s' % (level, msg))
+            print '*%s* %s' % (level, msg)
 
     def _active_loglevel(self, level):
         if level is None:
             return self._config.loglevel
-        if is_string(level) and \
+        if isinstance(level, basestring) and \
                 level.upper() in ['TRACE', 'DEBUG', 'INFO', 'WARN', 'HTML']:
             return level.upper()
         raise AssertionError("Invalid log level '%s'." % level)
@@ -833,7 +832,7 @@ class SSHLibrary(object):
             login_output = login_method(username, *args)
             self._log('Read output: %s' % login_output)
             return login_output
-        except SSHClientException as e:
+        except SSHClientException, e:
             raise RuntimeError(e)
 
     def execute_command(self, command, return_stdout=True, return_stderr=False,
@@ -964,12 +963,12 @@ class SSHLibrary(object):
                                            return_rc)
         try:
             stdout, stderr, rc = self.current.read_command_output()
-        except SSHClientException as msg:
+        except SSHClientException, msg:
             raise RuntimeError(msg)
         return self._return_command_output(stdout, stderr, rc, *opts)
 
     def _legacy_output_options(self, stdout, stderr, rc):
-        if not is_string(stdout):
+        if not isinstance(stdout, basestring):
             return stdout, stderr, rc
         stdout = stdout.lower()
         if stdout == 'stderr':
@@ -1040,7 +1039,7 @@ class SSHLibrary(object):
     def _write(self, text, add_newline=False):
         try:
             self.current.write(text, add_newline)
-        except SSHClientException as e:
+        except SSHClientException, e:
             raise RuntimeError(e)
 
     def write_until_expected_output(self, text, expected, timeout,
@@ -1211,7 +1210,7 @@ class SSHLibrary(object):
     def _read_and_log(self, loglevel, reader, *args):
         try:
             output = reader(*args)
-        except SSHClientException as e:
+        except SSHClientException, e:
             raise RuntimeError(e)
         self._log(output, loglevel)
         return output
@@ -1406,7 +1405,7 @@ class SSHLibrary(object):
     def _run_sftp_command(self, command, *args):
         try:
             files = command(*args)
-        except SSHClientException as e:
+        except SSHClientException, e:
             raise RuntimeError(e)
         for src, dst in files:
             self._info("'%s' -> '%s'" % (src, dst))
@@ -1499,7 +1498,7 @@ class SSHLibrary(object):
         """
         try:
             items = self.current.list_dir(path, pattern, absolute)
-        except SSHClientException as msg:
+        except SSHClientException, msg:
             raise RuntimeError(msg)
         self._info('%d item%s:\n%s' % (len(items), plural_or_not(items),
                                        '\n'.join(items)))
@@ -1512,7 +1511,7 @@ class SSHLibrary(object):
         """
         try:
             files = self.current.list_files_in_dir(path, pattern, absolute)
-        except SSHClientException as msg:
+        except SSHClientException, msg:
             raise RuntimeError(msg)
         files = self.current.list_files_in_dir(path, pattern, absolute)
         self._info('%d file%s:\n%s' % (len(files), plural_or_not(files),
@@ -1526,7 +1525,7 @@ class SSHLibrary(object):
         """
         try:
             dirs = self.current.list_dirs_in_dir(path, pattern, absolute)
-        except SSHClientException as msg:
+        except SSHClientException, msg:
             raise RuntimeError(msg)
         self._info('%d director%s:\n%s' % (len(dirs),
                                           'y' if len(dirs) == 1 else 'ies',

@@ -12,9 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-
-from robot.utils import is_integer, is_string, unic
-
+from __future__ import with_statement
 from fnmatch import fnmatchcase
 
 import os
@@ -154,10 +152,8 @@ class AbstractSSHClient(object):
     def _encode(self, text):
         if isinstance(text, str):
             return text
-        if is_integer(text):
-            return "%d" % text
-        if not is_string(text):
-            text = str(text)
+        if not isinstance(text, basestring):
+            text = unicode(text)
         return text.encode(self.config.encoding)
 
     def _login(self, username, password, look_for_keys=False):
@@ -308,7 +304,7 @@ class AbstractSSHClient(object):
     def _delayed_read(self, delay):
         delay = TimeEntry(delay).value
         max_time = time.time() + self.config.get('timeout').value
-        output = bytes()
+        output = ''
         while time.time() < max_time:
             time.sleep(delay)
             read = self.shell.read()
@@ -325,7 +321,7 @@ class AbstractSSHClient(object):
 
         :returns: A single char read from the output.
         """
-        server_output = bytes()
+        server_output = ''
         while True:
             try:
                 server_output += self.shell.read_byte()
@@ -416,7 +412,7 @@ class AbstractSSHClient(object):
         :returns: The read output up and until the `regexp` matches.
         """
         regexp = self._encode(regexp)
-        if is_string(regexp):
+        if isinstance(regexp, basestring):
             regexp = re.compile(regexp)
         return self._read_until(lambda s: regexp.search(s), regexp.pattern)
 
@@ -430,7 +426,7 @@ class AbstractSSHClient(object):
 
         timeout is defined with :py:meth:`open_connection()`
         """
-        if is_string(regexp):
+        if isinstance(regexp, basestring):
             regexp = re.compile(regexp)
         matcher = regexp.search
         expected = regexp.pattern
@@ -617,8 +613,7 @@ class AbstractSFTPClient(object):
     directories.
     """
 
-    def __init__(self, encoding):
-        self._encoding = encoding
+    def __init__(self):
         self._homedir = self._absolute_path('.')
 
     def _absolute_path(self, path):
@@ -832,7 +827,7 @@ class AbstractSFTPClient(object):
             msg = "There were no source files matching '%s'." % source
             raise SSHClientException(msg)
         local_files = self._get_get_file_destinations(remote_files, destination)
-        files = list(zip(remote_files, local_files))
+        files = zip(remote_files, local_files)
         for src, dst in files:
             self._get_file(src, dst)
         return files
@@ -964,7 +959,7 @@ class AbstractSFTPClient(object):
                                                                    destination,
                                                                    path_separator)
         self._create_missing_remote_path(remote_dir)
-        files = list(zip(local_files, remote_files))
+        files = zip(local_files, remote_files)
         for source, destination in files:
             self._put_file(source, destination, mode, newline)
         return files
@@ -1007,17 +1002,17 @@ class AbstractSFTPClient(object):
         return destination.rsplit(path_separator, 1)
 
     def _create_missing_remote_path(self, path):
-        if path.startswith(b'/'):
-            current_dir = b'/'
+        if path.startswith('/'):
+            current_dir = '/'
         else:
-            current_dir = self._absolute_path('.').encode()
-        for dir_name in path.split(b'/'):
+            current_dir = self._absolute_path('.')
+        for dir_name in path.split('/'):
             if dir_name:
                 current_dir = posixpath.join(current_dir, dir_name)
             try:
                 self._client.stat(current_dir)
             except:
-                self._client.mkdir(current_dir, 0o744)
+                self._client.mkdir(current_dir, 0744)
 
     def _put_file(self, source, destination, mode, newline):
         remote_file = self._create_remote_file(destination, mode)
@@ -1028,7 +1023,6 @@ class AbstractSFTPClient(object):
                 if not data:
                     break
                 if newline:
-                    data = data.decode(self._encoding)
                     data = re.sub(r'(\r\n|\r|\n)', newline, data)
                 self._write_to_remote_file(remote_file, data, position)
                 position += len(data)

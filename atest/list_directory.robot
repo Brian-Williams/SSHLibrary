@@ -10,7 +10,6 @@ List Content Using Absolute Path
     ${expected} =  Create List
     ...                         ${FILE WITH NEWLINES NAME}
     ...                         ${SUBDIRECTORY NAME}
-    ...                         ${COMPRESSED DIR}
     ...                         ${FILE WITH SPECIAL CHARS NAME}
     ...                         ${TEST FILE NAME}
 
@@ -21,7 +20,6 @@ List Content Using Relative Path
     ${expected} =  Create List
     ...                         ${FILE WITH NEWLINES NAME}
     ...                         ${SUBDIRECTORY NAME}
-    ...                         ${COMPRESSED DIR}
     ...                         ${FILE WITH SPECIAL CHARS NAME}
     ...                         ${TEST FILE NAME}
     ${listing} =  List Directory  ${REMOTE TEST ROOT NAME}
@@ -41,7 +39,6 @@ List Content Using Symlink As Path
     ${expected} =  Create List
     ...                         ${FILE WITH NEWLINES NAME}
     ...                         ${SUBDIRECTORY NAME}
-    ...                         ${COMPRESSED DIR}
     ...                         ${FILE WITH SPECIAL CHARS NAME}
     ...                         ${TEST FILE NAME}
     ${listing} =  List Directory  symlink
@@ -58,7 +55,6 @@ List Content With Absolute Paths Using Absolute Path
     ${expected} =  Create List
     ...                 ${REMOTE TEST ROOT}/${FILE WITH NEWLINES NAME}
     ...                 ${REMOTE TEST ROOT}/${SUBDIRECTORY NAME}
-    ...                 ${REMOTE TEST ROOT}/${COMPRESSED DIR}
     ...                 ${REMOTE TEST ROOT}/${FILE WITH SPECIAL CHARS NAME}
     ...                 ${REMOTE TEST ROOT}/${TEST FILE NAME}
     ${listing} =  List Directory  ${REMOTE TEST ROOT}  absolute=True
@@ -68,7 +64,6 @@ List Content With Absolute Paths Using Relative Path
     ${expected} =  Create List
     ...                 ${REMOTE TEST ROOT}/${FILE WITH NEWLINES NAME}
     ...                 ${REMOTE TEST ROOT}/${SUBDIRECTORY NAME}
-    ...                 ${REMOTE TEST ROOT}/${COMPRESSED DIR}
     ...                 ${REMOTE TEST ROOT}/${FILE WITH SPECIAL CHARS NAME}
     ...                 ${REMOTE TEST ROOT}/${TEST FILE NAME}
     ${listing} =  List Directory  ${REMOTE TEST ROOT NAME}  absolute=True
@@ -90,7 +85,6 @@ List Content With Absolute Paths Using Symlink As Path
     ${expected} =  Create List
     ...                 ${REMOTE TEST ROOT}/${FILE WITH NEWLINES NAME}
     ...                 ${REMOTE TEST ROOT}/${SUBDIRECTORY NAME}
-    ...                 ${REMOTE TEST ROOT}/${COMPRESSED DIR}
     ...                 ${REMOTE TEST ROOT}/${FILE WITH SPECIAL CHARS NAME}
     ...                 ${REMOTE TEST ROOT}/${TEST FILE NAME}
     ${listing} =  List Directory  symlink   absolute=True

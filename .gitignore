@@ -2,7 +2,6 @@ build
 dist
 .DS_Store
 .idea
-*.iml
 *.pyc
 *.class
 *.egg-info

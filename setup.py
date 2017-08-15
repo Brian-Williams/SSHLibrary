@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import with_statement
 from sys import platform
 
 requires = {}
@@ -18,7 +19,7 @@ except ImportError:
 from os.path import abspath, dirname, join
 
 CURDIR = dirname(abspath(__file__))
-exec(compile(open(join(CURDIR, 'src', 'SSHLibrary', 'version.py')).read(), 'version.py', 'exec'))
+execfile(join(CURDIR, 'src', 'SSHLibrary', 'version.py'))
 with open(join(CURDIR, 'README.rst')) as readme:
     README = readme.read()
 CLASSIFIERS = """
