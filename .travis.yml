@@ -1,0 +1,10 @@
+sudo: required
+services:
+- docker
+language: python
+python:
+- '3.6'
+install:
+- docker build -t sshlibrary-py3 .
+script:
+- docker run sshlibrary-py3
