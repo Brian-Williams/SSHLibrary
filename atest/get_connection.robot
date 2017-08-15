@@ -1,6 +1,6 @@
 *** Settings ***
 Default Tags   pybot   jybot
-Resource       resources/common.txt
+Resource       resources/common.robot
 Test Teardown  Close All Connections
 Library        OperatingSystem
 
@@ -36,8 +36,8 @@ Get Connection Index Only
 
 Get Connection Host And Timeout Only
     Open Connection  ${HOST}  timeout=3 seconds
-    ${host}  ${timeout}=  Get Connection  host=Yes  timeout=True  port=false
-    Should Be Equal  ${host}  localhost
+    ${rhost}  ${timeout}=  Get Connection  host=Yes  timeout=True  port=false
+    Should Be Equal  ${rhost}  ${HOST}
     Should Be Equal As Integers  ${timeout}  3
 
 Get Connections
