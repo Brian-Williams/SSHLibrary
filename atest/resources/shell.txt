@@ -1,5 +1,5 @@
 *** Settings ***
-Resource    common.robot
+Resource    common.txt
 
 *** Variables ***
 ${LOCAL SCRIPTS}     ${LOCAL TESTDATA}${/}scripts

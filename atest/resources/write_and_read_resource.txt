@@ -1,5 +1,5 @@
 *** Settings ***
-Resource        shell.robot
+Resource        shell.txt
 
 *** Variables ***
 ${COUNTER NAME}                  counter.txt
