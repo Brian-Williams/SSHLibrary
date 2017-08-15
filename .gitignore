@@ -12,4 +12,3 @@ atest/testdata/keyfiles/id_rsa
 examples/output.xml
 examples/log.html
 examples/report.html
-.cache/
